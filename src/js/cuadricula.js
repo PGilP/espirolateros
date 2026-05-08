@@ -185,8 +185,7 @@ document.getElementById('btnPatron').addEventListener('click', () => {
     let row = (canvas.height / 2) / gridSize;
 
     paintedLines = [];
-    let gradoIdx = 0;
-    let gradoActual = grados[gradoIdx];
+
 
     let pasosPorVuelta = patronArr.length;
     let paso = 0;
@@ -196,7 +195,10 @@ document.getElementById('btnPatron').addEventListener('click', () => {
     let repeticiones = 0;
 
     do {
-
+        //Esto esta pensado para poder hacer que el patron se repita pero con un giro diferente cada vez
+        let gradoIdx = 0;
+        
+        let gradoActual = grados[gradoIdx];
         const estado = `${col},${row},${paso},${gradoIdx}`;
         if (paintedLines.length > 0 && estados.has(estado) && getDirection(gradoActual, pasoAbsoluto) == getDirection(gradoActual, 0)) {
             break;//1,1,2,2,3,1
