@@ -198,8 +198,8 @@ document.getElementById('btnPatron').addEventListener('click', () => {
     do {
 
         const estado = `${col},${row},${paso},${gradoIdx}`;
-        if (paintedLines.length > 0 && estados.has(estado)){
-            break;
+        if (paintedLines.length > 0 && estados.has(estado) && getDirection(gradoActual, pasoAbsoluto) == getDirection(gradoActual, 0)) {
+            break;//1,1,2,2,3,1
         } 
         estados.add(estado);
 
