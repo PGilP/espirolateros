@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espirolateros</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #fff;
+        }
+        #cuadricula {
+            display: block;
+            background-color: #fff;
+            cursor: crosshair;
+        }
+        /* Puedes añadir esto en tu <style> del HTML */
+        input[type="text"], input[type="number"] {
+            border: 2px solid #1976d2;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 1.1em;
+            margin: 4px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus {
+            border: 2px solid #ff9800;
+            background: #e3f2fd;
+        }
+        button {
+            background: linear-gradient(90deg, #1976d2 60%, #64b5f6 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 18px;
+            font-size: 1.1em;
+            margin: 4px;
+            cursor: pointer;
+
+        }
+        button:hover {
+            background: linear-gradient(90deg, #0075fb 60%, #1976d2 100%);
+        }
+    </style>
+</head>
+<body>
+    <div style="padding: 10px;">
+        <label>
+            Patrón:
+            <input type="text" id="inputPatron" value="1,1,2" style="width: 120px;">
+        </label>
+        <label>
+            Grados de giro:
+            <input type="number" id="inputGrados" value="90" min="1" max="360" step="1" style="width: 60px;">
+        </label>
+        <label>
+            Escala:
+            <input type="number" id="inputEscala" value="1" min="0.1" max="10" step="0.1" style="width: 60px;">
+        </label>
+        <button id="btnPatron">Pintar patrón</button>
+        <button id="clean">Limpiar</button>
+        <button id="exportSVG">Exportar SVG</button>
+    </div>
+    <canvas id="cuadricula"></canvas>
+    <script src="js/cuadricula.js"></script>
+</body>
+</html>
