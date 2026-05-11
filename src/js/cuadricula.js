@@ -229,7 +229,9 @@ document.getElementById('patternButton').addEventListener('click', () => {
         }
         step = 0
         repetitions++;
-
+        if (!(repetitions < 10000 && paintedLines.length < 5000)){
+            console.log('Bucle infinito detectado, deteniendo generación de patrón para evitar bloqueo del navegador.');
+        }
     } while (repetitions < 10000 && paintedLines.length < 5000); // safety limits: max repetitions and max lines
     console.log('Repetitions:', repetitions);
         // ===== CENTRAR EL PATRÓN =====
