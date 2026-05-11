@@ -11,7 +11,7 @@
             min-height: 100vh;
             background-color: #fff;
         }
-        #cuadricula {
+        #grid {
             display: block;
             background-color: #fff;
             cursor: crosshair;
@@ -50,15 +50,15 @@
     <div style="padding: 10px;">
         <label>
             Patrón:
-            <input type="text" id="inputPatron" value="1,1,2" style="width: 120px;">
+            <input type="text" id="patternInput" value="1,1,2" style="width: 120px;">
         </label>
         <label>
             Grados de giro:
-            <input type="text" id="inputGrados" value="90" min="1" max="360" step="1" style="width: 60px;">
+            <input type="text" id="degreesInput" value="45" min="1" max="360" step="1" style="width: 60px;">
         </label>
         <label>
             Escala:
-            <input type="number" id="inputEscala" value="1" min="0.1" max="10" step="0.1" style="width: 60px;">
+            <input type="number" id="scaleInput" value="1" min="0.1" max="10" step="0.1" style="width: 60px;">
         </label>
         <label>
             Color:
@@ -68,11 +68,11 @@
             Ancho de linea:
                 <input type="number" id="lineWidth" value="1" min="1" max="10" step="1" style="width: 60px;">
         </label>
-        <button id="btnPatron">Pintar patrón</button>
+        <button id="patternButton">Pintar patrón</button>
         <button id="clean">Limpiar</button>
         <button id="exportSVG">Exportar SVG</button>
     </div>
-    <canvas id="cuadricula"></canvas>
+    <canvas id="grid"></canvas>
     <script src="js/cuadricula.js"></script>
 </body>
 </html>

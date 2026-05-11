@@ -1,11 +1,10 @@
-const canvas = document.getElementById('cuadricula');
+const canvas = document.getElementById('grid');
 const ctx = canvas.getContext('2d');
 const gridSize = 24;
 const lineSet = new Set();
-var LINEWIDTH;
-var LINECOLOR;
+let LINEWIDTH = 1;
+let LINECOLOR = '#000';
 
-let paintedCells = new Set();
 let paintedLines = [];
 
 // === FUNCIONES BÁSICAS ===
@@ -41,7 +40,6 @@ function drawPatternLines() {
 }
 
 function resetCanvas() {
-    paintedCells.clear();
     paintedLines = [];
     lineSet.clear();
     resizeCanvasSharp();
@@ -167,51 +165,52 @@ function getDirection(grados, paso) {
 }
 
 // === EVENTO BOTÓN PATRÓN ===
-document.getElementById('btnPatron').addEventListener('click', () => {
+document.getElementById('patternButton').addEventListener('click', () => {
     resetCanvas();
     LINEWIDTH = parseInt(document.getElementById('lineWidth').value, 10);
     LINECOLOR = document.getElementById('lineColor').value;
-    const SCALE = document.getElementById('inputEscala').value;
-    const patronArr = document.getElementById('inputPatron').value
+    const scale = document.getElementById('scaleInput').value;
+    const patternArray = document.getElementById('patternInput').value
         .split(',')
         .map(n => parseInt(n.trim(), 10))
         .filter(n => !isNaN(n));
 
-    const grados = document.getElementById('inputGrados').value.split(',')
+    const degrees = document.getElementById('degreesInput').value.split(',')
         .map(n => parseInt(n.trim(), 10))
         .filter(n => !isNaN(n));
 
-    let col = (canvas.width / 2) / gridSize;
-    let row = (canvas.height / 2) / gridSize;
+    let column = Math.round((canvas.width / 2) / gridSize);
+    let row = Math.round((canvas.height / 2) / gridSize);
 
     paintedLines = [];
 
 
-    let pasosPorVuelta = patronArr.length;
-    let paso = 0;
-    let pasoAbsoluto = 0
+    let stepsPerTurn = patternArray.length;
+    let step = 0;
+    let absoluteStep = 0
 
-    let estados = new Set();
-    let repeticiones = 0;
+    let states = new Set();
+    let repetitions = 0;
 
     do {
         //Esto esta pensado para poder hacer que el patron se repita pero con un giro diferente cada vez
-        let gradoIdx = 0;
+        //No soy capaz de hacer esto por que en getDirection coge una direccion que no es la correcta
+        let degreeIndex = 0;
         
-        let gradoActual = grados[gradoIdx];
-        const estado = `${col},${row},${paso},${gradoIdx}`;
-        if (paintedLines.length > 0 && estados.has(estado) && getDirection(gradoActual, pasoAbsoluto) == getDirection(gradoActual, 0)) {
+        let currentDegree = degrees[degreeIndex];
+        const state = `${column},${row},${step},${degreeIndex}`;
+        if (paintedLines.length > 0 && states.has(state) && getDirection(currentDegree, absoluteStep) == getDirection(currentDegree, 0)) {
             break;//1,1,2,2,3,1
         } 
-        estados.add(estado);
+        states.add(state);
 
-        for (let rep of patronArr) {
-            const { dx, dy } = getDirection(gradoActual, pasoAbsoluto);
+        for (let rep of patternArray) {
+            const { dx, dy } = getDirection(currentDegree, absoluteStep);
 
             for (let j = 0; j < rep; j++) {
-                const x = col * gridSize;
+                const x = column * gridSize;
                 const y = row * gridSize;
-                const x2 = (col + dx) * gridSize;
+                const x2 = (column + dx) * gridSize;
                 const y2 = (row + dy) * gridSize;
 
                 const key = lineKey(x, y, x2, y2);
@@ -221,18 +220,18 @@ document.getElementById('btnPatron').addEventListener('click', () => {
                     lineSet.add(key);
                 }
 
-                col += dx;
+                column += dx;
                 row += dy;
             }
 
-            paso++;
-            pasoAbsoluto++
+            step++;
+            absoluteStep++
         }
-        paso = 0
-        repeticiones++;
+        step = 0
+        repetitions++;
 
-    } while (repeticiones < 200000); // límite de seguridad
-    console.log('Repeticiones:', repeticiones);
+    } while (repetitions < 10000 && paintedLines.length < 5000); // safety limits: max repetitions and max lines
+    console.log('Repetitions:', repetitions);
         // ===== CENTRAR EL PATRÓN =====
     if (paintedLines.length > 0) {
         let minX = Infinity;
@@ -256,8 +255,8 @@ document.getElementById('btnPatron').addEventListener('click', () => {
         const offsetX = (canvas.width - (maxX - minX)) / 2 - minX;
         const offsetY = (canvas.height - (maxY - minY)) / 2 - minY;
 
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
 
         paintedLines = paintedLines.map(l => {
             const x1 = l.x1 + offsetX;
@@ -266,10 +265,10 @@ document.getElementById('btnPatron').addEventListener('click', () => {
             const y2 = l.y2 + offsetY;
 
             return {
-                x1: cx + (x1 - cx) * SCALE,
-                y1: cy + (y1 - cy) * SCALE,
-                x2: cx + (x2 - cx) * SCALE,
-                y2: cy + (y2 - cy) * SCALE
+                x1: centerX + (x1 - centerX) * scale,
+                y1: centerY + (y1 - centerY) * scale,
+                x2: centerX + (x2 - centerX) * scale,
+                y2: centerY + (y2 - centerY) * scale
             };
         });
     }
